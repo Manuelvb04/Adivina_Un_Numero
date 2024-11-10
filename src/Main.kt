@@ -1,7 +1,16 @@
 import java.io.File
+
 //Codigo colores
+const val RESET = "\u001B[0m"
+//De fondo
 
+const val BG_BLACK = "\u001B[40m"
+//De Letra
 
+const val CYAN = "\u001B[36m"
+const val UNDERLINE = "\u001B[4m"
+const val GREEN = "\u001B[32m"
+const val PURPLE = "\u001B[35m"
 //variables globales
 val file = File("ultimo_intento.txt")
 val numintentosmax=3
@@ -9,7 +18,7 @@ val numintentosmax=3
 
 
 
-fun numaleatorio():Int{ //hace el numero aleatorio
+fun numaleatorio():Int{ //hace el numero Secreto
 
  val numeros = (1..6).shuffled().toList()
     var numnuevo = ""
@@ -29,12 +38,12 @@ fun numresultado(numintento:String, numsecreto:String){//Calcula aciertos y coin
     for (i in 0 until 4){
         if (numintento[i] == numsecreto[i]){//Si concuerdan numero y posicion se suma acierto
             acierto++
-        } else if (numsecreto.contains(numintento[i])){
+        } else if (numsecreto.contains(numintento[i])){// si no concuerda en posicion se suma coincidente
                 coincidente++
             }
     }
 
-    println(" Numero aciertos $acierto  Numero coincidencias $coincidente")
+    println("${GREEN}${UNDERLINE}Aciertos${RESET}${BG_BLACK}${GREEN} $acierto  ${PURPLE}${UNDERLINE}Coincidencias${RESET}${PURPLE}${BG_BLACK} $coincidente${CYAN}")
 }
 
 
@@ -56,17 +65,17 @@ fun validacion(numero: String) {//Numero es la entrada del usuario
     }
 }
 
-fun jugar() {
+fun jugar() { //jueg
     var contador = 0
     var intentos = numintentosmax
-    var randomnumber=numaleatorio().toString()//esta calculado en otra funcion, es el numero de la solucion
+    val randomnumber=numaleatorio().toString()//esta calculado en otra funcion, es el numero de la solucion
     file.writeText("$randomnumber\n")
     while (contador!=intentos){
 
-        var numintentos= intentos-contador
+        val numintentos= intentos-contador
         println("Escribe un numero de 4 cifras con digitos del 1 al 6 sin repetir. Tienes $numintentos intentos")
-        var entradanumero= readln()
-        var norepetidos=entradanumero.toSet()// Valida que el usuario no repita numeros
+        val entradanumero= readln()
+        val norepetidos=entradanumero.toSet()// Valida que el usuario no repita numeros
         if (norepetidos.size == 4) {
             validacion(entradanumero) //Valida si la entrada cumple lo solicitado
             contador++
@@ -87,46 +96,47 @@ fun jugar() {
 
 }
 
-fun leerlineultintento(linea:Int):String? {
+fun leerlineultintento(linea:Int):String {//lee las lineas que vamos a guardar
 
-    var lineas = file.readLines()
+    val lineas = file.readLines()
 
     return if (linea in 1 until numintentosmax+2 && linea <= lineas.size) {
         lineas[linea - 1]//Se le resta 1 porque iniciamos en 0
     } else {
-        "Ninguno"
+        "No realizado"
     }
 }
 fun ultimointento(){ //Guarda el ultimo intento
 
-    println("---------------")
-    println("Ultimo Intento:")
-    println("---------------")
+    println("-------------------")
+    println("Ultimo Intento")
+    println("-------------------")
     if (file.exists()){//si encuentra el intento lo imprime
-        print("Numero Secreto: ")
+        print("Numero Secreto:")
         println(leerlineultintento(1))
         for (i in 2..numintentosmax+1){//selecciona las lineas de los intentos realizados y las imprime
             println("Numero intento:" + leerlineultintento(i))
     }
     } else {
         println("No hay ningun intento guardado")
-        println("---------------")
+
     }
+    println("-------------------")
 }
 fun main (){
     var n =0
     while (n !=1){
-        println()
+        println("${CYAN}${BG_BLACK}")
         println("1. Jugar")
         println("2. Ver traza de ultimo intento")
-        println("3. Salir")
-        print("Opción: ")
-        var entrada =readln()
+        println("3. Salir\n")
+        print("${UNDERLINE}Opción:${RESET}${CYAN}${BG_BLACK}\n")
+        val entrada =readln()
         println()
         if (entrada!="1" && entrada!="2" && entrada!="3"){
             println("Porfavor, selecciona una de las opciones disponibles")
         }else {
-            var seleccion = entrada.toInt()
+            val seleccion = entrada.toInt()
 
             when (seleccion) {//menu del juego
                 1 -> jugar()
