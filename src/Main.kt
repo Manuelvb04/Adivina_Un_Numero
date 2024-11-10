@@ -51,7 +51,7 @@ fun validacion(numero: String) {//Numero es la entrada del usuario
     if (numero.length == 4) {
         for (i in numero) {
             if (i !in '1' .. '6') {
-                println("Por favor, solo números del 1 al 6.")
+                println("Por favor, solo números del 1 al 6. ")
                 return  // Termina la función si encuentra un número inválido
             }
         }
